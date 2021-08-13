@@ -1,0 +1,16 @@
+{
+    "repository": {
+        "repositoryArn": "arn:aws:ecr:us-east-1:609157373734:repository/process-stackoverflow-data",
+        "registryId": "609157373734",
+        "repositoryName": "process-stackoverflow-data",
+        "repositoryUri": "609157373734.dkr.ecr.us-east-1.amazonaws.com/process-stackoverflow-data",
+        "createdAt": "2021-08-12T19:41:00-03:00",
+        "imageTagMutability": "MUTABLE",
+        "imageScanningConfiguration": {
+            "scanOnPush": true
+        },
+        "encryptionConfiguration": {
+            "encryptionType": "AES256"
+        }
+    }
+}

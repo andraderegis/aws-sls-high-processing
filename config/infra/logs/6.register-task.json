@@ -1,0 +1,75 @@
+{
+    "taskDefinition": {
+        "taskDefinitionArn": "arn:aws:ecs:us-east-1:609157373734:task-definition/process-stackoverflow-data:1",
+        "containerDefinitions": [
+            {
+                "name": "process-stackoverflow-data",
+                "image": "609157373734.dkr.ecr.us-east-1.amazonaws.com/process-stackoverflow-data",
+                "cpu": 0,
+                "portMappings": [],
+                "essential": true,
+                "environment": [
+                    {
+                        "name": "AWS_ENV_PATH",
+                        "value": "/prod/process-stackoverflow-data"
+                    }
+                ],
+                "mountPoints": [],
+                "volumesFrom": [],
+                "logConfiguration": {
+                    "logDriver": "awslogs",
+                    "options": {
+                        "awslogs-group": "/ecs/sls-process-stackoverflow-data",
+                        "awslogs-region": "us-east-1",
+                        "awslogs-stream-prefix": "process-stackoverflow-data"
+                    }
+                }
+            }
+        ],
+        "family": "process-stackoverflow-data",
+        "taskRoleArn": "arn:aws:iam::609157373734:role/ECSTaskExecutionRole",
+        "executionRoleArn": "arn:aws:iam::609157373734:role/ECSTaskExecutionRole",
+        "networkMode": "awsvpc",
+        "revision": 1,
+        "volumes": [],
+        "status": "ACTIVE",
+        "requiresAttributes": [
+            {
+                "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
+            },
+            {
+                "name": "ecs.capability.execution-role-awslogs"
+            },
+            {
+                "name": "com.amazonaws.ecs.capability.ecr-auth"
+            },
+            {
+                "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
+            },
+            {
+                "name": "com.amazonaws.ecs.capability.task-iam-role"
+            },
+            {
+                "name": "ecs.capability.execution-role-ecr-pull"
+            },
+            {
+                "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+            },
+            {
+                "name": "ecs.capability.task-eni"
+            }
+        ],
+        "placementConstraints": [],
+        "compatibilities": [
+            "EC2",
+            "FARGATE"
+        ],
+        "requiresCompatibilities": [
+            "FARGATE"
+        ],
+        "cpu": "256",
+        "memory": "512",
+        "registeredAt": "2021-08-12T20:02:54.728000-03:00",
+        "registeredBy": "arn:aws:iam::609157373734:user/reginaldo-andrade"
+    }
+}
