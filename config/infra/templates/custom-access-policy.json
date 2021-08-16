@@ -1,0 +1,31 @@
+{ 
+  "Statement": [
+    {
+      "Action": [
+        "s3:ListBucket",
+        "s3:GetObject",
+        "s3:PutObject"
+      ],
+      "Effect": "Allow",
+      "Resource": [
+        "arn:aws:s3:::stackoverflow-surveys-ra",
+        "arn:aws:s3:::stackoverflow-surveys-ra/*"
+      ]
+    }, 
+    {
+      "Action": [
+        "s3:PutObject"
+      ],
+      "Effect": "Allow",
+      "Resource": "arn:aws:s3:::stackoverflow-surveys-ra/reports/*"
+    },
+    {
+      "Action": [
+        "ssm:GetParametersByPath"
+      ],
+      "Effect": "Allow",
+      "Resource": "arn:aws:ssm:*:*:parameter/prod/process-stackoverflow-data/"
+    }
+  ],
+  "Version": "2012-10-17"
+}
