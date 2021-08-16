@@ -1,0 +1,32 @@
+{
+  "family": "process-stackoverflow-data",
+  "networkMode": "awsvpc",
+  "taskRoleArn": "arn:aws:iam::609157373734:role/ECSTaskExecutionRole",
+  "executionRoleArn": "arn:aws:iam::609157373734:role/ECSTaskExecutionRole",
+  "cpu": "256",
+  "memory": "512",
+  "requiresCompatibilities": [
+    "FARGATE"
+  ],
+  "containerDefinitions": [
+    {
+      "name": "process-stackoverflow-data",
+      "image": "609157373734.dkr.ecr.us-east-1.amazonaws.com/process-stackoverflow-data",
+      "essential": true,
+      "environment": [
+        {
+          "name": "AWS_ENV_PATH",
+          "value": "/prod/process-stackoverflow-data"
+        }
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/sls-process-stackoverflow-data",
+          "awslogs-region": "us-east-1",
+          "awslogs-stream-prefix": "process-stackoverflow-data"
+        }
+      }
+    }
+  ]
+}
