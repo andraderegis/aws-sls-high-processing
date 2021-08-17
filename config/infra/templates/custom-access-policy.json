@@ -24,7 +24,7 @@
         "ssm:GetParametersByPath"
       ],
       "Effect": "Allow",
-      "Resource": "arn:aws:ssm:*:*:parameter/prod/process-stackoverflow-data/"
+      "Resource": "arn:aws:ssm:*:*:parameter/prod/sls-process-stackoverflow-data/"
     }
   ],
   "Version": "2012-10-17"
