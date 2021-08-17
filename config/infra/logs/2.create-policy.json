@@ -1,14 +1,14 @@
 {
     "Policy": {
         "PolicyName": "process-stackoverflow-data-policy",
-        "PolicyId": "ANPAY3VE334TCSS75NQFD",
+        "PolicyId": "ANPAY3VE334THYGUAD34U",
         "Arn": "arn:aws:iam::609157373734:policy/process-stackoverflow-data-policy",
         "Path": "/",
         "DefaultVersionId": "v1",
         "AttachmentCount": 0,
         "PermissionsBoundaryUsageCount": 0,
         "IsAttachable": true,
-        "CreateDate": "2021-08-12T21:47:01+00:00",
-        "UpdateDate": "2021-08-12T21:47:01+00:00"
+        "CreateDate": "2021-08-17T14:17:33+00:00",
+        "UpdateDate": "2021-08-17T14:17:33+00:00"
     }
 }
