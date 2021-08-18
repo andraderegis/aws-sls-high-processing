@@ -1,0 +1,19 @@
+{
+  "name": "s3watcher",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "invoke:local": "sls invoke local -f s3Watcher --path mocks/s3-event.json",
+    "logs": "sls logs -f s3Watcher -t"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.970.0",
+    "env-var": "^7.0.1"
+  },
+  "devDependencies": {
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "prettier": "^2.3.2"
+  }
+}
