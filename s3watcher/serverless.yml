@@ -1,0 +1,63 @@
+service: s3watcher
+
+frameworkVersion: '2'
+
+variablesResolutionMode: 20210326
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  lambdaHashingVersion: 20201221
+  environment:
+    BUCKET_REPORTS: ${ssm:/prod/sls-process-stackoverflow-data/BUCKET_REPORTS}
+    BUCKET_SURVEYS: ${ssm:/prod/sls-process-stackoverflow-data/BUCKET_SURVEYS}
+    ECS_CLUSTER_NAME: ${ssm:/prod/sls-process-stackoverflow-data/ECS_CLUSTER_NAME}
+    ECS_TASK_LAUNCH_TYPE: ${ssm:/prod/sls-process-stackoverflow-data/ECS_TASK_LAUNCH_TYPE}
+    ECS_TASK_COUNT: ${ssm:/prod/sls-process-stackoverflow-data/ECS_TASK_COUNT}
+    ECS_TASK_DEFINITION: ${ssm:/prod/sls-process-stackoverflow-data/ECS_TASK_DEFINITION}
+    ECS_TASK_PLATAFORM_VERSION: ${ssm:/prod/sls-process-stackoverflow-data/ECS_TASK_PLATAFORM_VERSION}
+    ECS_TASK_CONTAINER_NAME: ${ssm:/prod/sls-process-stackoverflow-data/ECS_TASK_CONTAINER_NAME}
+    ECS_TASK_CONTAINER_FILE_ENV_NAME: ${ssm:/prod/sls-process-stackoverflow-data/ECS_TASK_CONTAINER_FILE_ENV_NAME}
+    ECS_TASK_SUBNETS: ${ssm(raw):/prod/sls-process-stackoverflow-data/ECS_TASK_SUBNETS}
+    ECS_TASK_SECURITY_GROUPS: ${ssm(raw):/prod/sls-process-stackoverflow-data/ECS_TASK_SECURITY_GROUPS}
+    ECS_TASK_ASSIGN_PUBLIC_IP: ${ssm:/prod/sls-process-stackoverflow-data/ECS_TASK_ASSIGN_PUBLIC_IP}
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          # grant execution task in ECS at all resources
+          Action:
+            - ecs:RunTask
+          Resource:
+            - '*'
+        - Effect: Allow
+        # grant PassRole. The execution task will be running with role execRoleArn (declared in custom)
+          Action:
+            - iam:PassRole
+          Resource:
+            - ${self:custom.execRoleArn}
+        - Effect: Allow
+          Action:
+            - s3:GetObject
+          Resource:
+            - 'arn:aws:s3:::${self:provider.environment.BUCKET_SURVEYS}'
+            # if bucket not exists, with "/*" after bucket name, it will be created
+            - 'arn:aws:s3:::${self:provider.environment.BUCKET_SURVEYS}/*'
+
+custom:
+  #get AWS AccountId and merge with custom role ECSTaskExecutionRole
+  execRoleArn: { 'Fn::Join': [ '', ['arn:aws:iam::', { 'Ref': 'AWS::AccountId'}, ':role/ECSTaskExecutionRole']] }
+
+package:
+  excludeDevDependencies: true
+
+functions:
+  s3Watcher:
+    handler: handler.hello
+    events:
+      - s3:
+          bucket: ${self:provider.environment.BUCKET_SURVEYS}
+          event: s3:ObjectCreated:*
+          rules:
+            - suffix: .csv
+
