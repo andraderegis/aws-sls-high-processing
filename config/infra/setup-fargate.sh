@@ -14,7 +14,7 @@ CUSTOM_POLICY_ARN="arn:aws:iam::609157373734:policy/process-stackoverflow-data-p
 
 # value from create container registry step
 ECR_URI_DOCKER="609157373734.dkr.ecr.us-east-1.amazonaws.com/process-stackoverflow-data"
-SSM_ENV_PATH="/prod/sls-process-stackoverflow-data"
+SSM_ENV_PATH="/prod/$PROJECT_NAME"
 
 #value from create task definitions for fargate step
 TASK_DEFINTION_ARN="arn:aws:ecs:us-east-1:609157373734:task-definition/process-stackoverflow-data:1"
@@ -109,3 +109,14 @@ aws ec2 authorize-security-group-ingress \
   --cidr $CURRENT_PUBLIC_IP \
   --region $REGION \
   | tee logs/11.authorize-sec-group.json
+
+# clean up
+aws iam detach-role-policy \
+  --region $REGION \
+  --role-name $ECS_ROLE_NAME \
+  --policy-arn $CUSTOM_POLICY_ARN
+
+aws iam \
+  --region $REGION \
+  delete-policy \
+  --policy-arn $CUSTOM_POLICY_ARN

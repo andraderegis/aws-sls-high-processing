@@ -1,0 +1,38 @@
+{
+  "Records": [
+    {
+      "eventVersion": "2.1",
+      "eventSource": "aws:s3",
+      "awsRegion": "us-east-1",
+      "eventTime": "2021-08-18T17:15:35.722Z",
+      "eventName": "ObjectCreated:Put",
+      "userIdentity": {
+        "principalId": "A1ARSICNN9LGK3"
+      },
+      "requestParameters": {
+        "sourceIPAddress": "179.0.73.208"
+      },
+      "responseElements": {
+        "x-amz-request-id": "7XE2BE81NPDQBRDC",
+        "x-amz-id-2": "eaqUG2BdALUN8VA+AR8RfcRgpKOoBI99npd/4fObOcifDl8urVAGBQxXaS+f84eEuTOyyxhp58+4XVo9yv50DI/uD7r/aTKt"
+      },
+      "s3": {
+        "s3SchemaVersion": "1.0",
+        "configurationId": "eacd0835-14fd-41ee-889e-39a895160564",
+        "bucket": {
+          "name": "stackoverflow-surveys-ra",
+          "ownerIdentity": {
+            "principalId": "A1ARSICNN9LGK3"
+          },
+          "arn": "arn:aws:s3:::stackoverflow-surveys-ra"
+        },
+        "object": {
+          "key": "test.csv",
+          "size": 28,
+          "eTag": "33a32fb204a935fdffa413951e0e6b6a",
+          "sequencer": "00611D403AE196C647"
+        }
+      }
+    }
+  ]
+}

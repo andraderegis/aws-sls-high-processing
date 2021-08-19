@@ -11,7 +11,6 @@ const { v4: uuid } = require('uuid');
 const assert = require('assert');
 
 const S3 = new AWS.S3();
-const { AWS_VARIABLES } = require('../config/env-manager/src/env');
 
 const pipelineAsync = promisify(pipeline);
 const chart = new XLSXChart();
@@ -165,10 +164,10 @@ async function main() {
 }
 
 process.env.SURVERY_FILE = JSON.stringify({
-  Bucket: AWS_VARIABLES.BUCKET_SURVEYS.value,
+  Bucket: 'stackoverflow-surveys-ra',
   Key: 'survey_results_public.csv'
 });
 
-process.env.BUCKET_REPORTS = AWS_VARIABLES.BUCKET_REPORTS.value;
+process.env.BUCKET_REPORTS = 'reports';
 
 main();

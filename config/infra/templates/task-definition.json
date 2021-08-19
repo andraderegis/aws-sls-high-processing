@@ -16,7 +16,7 @@
       "environment": [
         {
           "name": "AWS_ENV_PATH",
-          "value": "/prod/process-stackoverflow-data"
+          "value": "/prod/sls-process-stackoverflow-data/"
         }
       ],
       "logConfiguration": {

@@ -1,8 +1,8 @@
-const SSM_PREFIX = '/prod/process-stackoverflow-data';
+const SSM_PREFIX = '/prod/sls-process-stackoverflow-data';
 
 const AWS_VARIABLES = {
   ECS_TASK_DEFINITION: {
-    value: 'process-stackoverflow-data:1',
+    value: 'process-stackoverflow-data:3',
     type: 'String'
   },
   ECS_CLUSTER_NAME: {
