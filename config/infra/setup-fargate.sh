@@ -110,13 +110,55 @@ aws ec2 authorize-security-group-ingress \
   --region $REGION \
   | tee logs/11.authorize-sec-group.json
 
-# clean up
+# CLEAN UP ALL RESOURCES
+
+# listing task definitions
+TASKS=$(aws ecs list-task-definitions --query "taskDefinitionArns[*]" | jq -r '.[]')
+
+# removing task definitions
+for i in $(printf '%s\n' "${TASKS[@]}"); do
+  echo 'desregistering' $i
+  aws ecs deregister-task-definition \
+    --task-definition $i
+done
+
+# removing log group
+aws logs delete-log-group \
+  --log-group-name $LOG_GROUP_NAME
+
+# removing cluster
+aws ecs delete-cluster \
+  --cluster $CLUSTER_NAME
+
+# removing security group
+aws ec2 delete-security-group \
+  --group-name $SECURITY_GROUP_NAME
+
+# removing ecr
+aws ecr delete-repository \
+  --repository-name $APP_NAME --force
+
+# detaching policy
 aws iam detach-role-policy \
   --region $REGION \
   --role-name $ECS_ROLE_NAME \
   --policy-arn $CUSTOM_POLICY_ARN
 
+# removing policy
 aws iam \
   --region $REGION \
   delete-policy \
   --policy-arn $CUSTOM_POLICY_ARN
+
+# removing role
+aws iam delete-role \
+  --region $REGION \
+  --role-name $ECS_ROLE_NAME
+
+# removing environment variables
+aws ssm delete-parameters \
+  --names `aws ssm get-parameters-by-path --path "$SSM_ENV_PATH" --query "Parameters[*].Name" --output text --max-items 9`
+
+# removing bucket (before remove serverless project, this step is mandatory)
+aws s3 rm s3://stackoverflow-surveys-ra --recursive
+
