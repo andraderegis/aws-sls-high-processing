@@ -71,6 +71,14 @@ const AWS_VARIABLES = {
   SSM_PREFIX: {
     value: SSM_PREFIX,
     type: 'String'
+  },
+  SES_EMAIL_TO: {
+    value: 'regisnva@gmail.com',
+    type: 'String'
+  },
+  SES_EMAIL_FROM: {
+    value: 'regisnva@gmail.com',
+    type: 'String'
   }
 };
 

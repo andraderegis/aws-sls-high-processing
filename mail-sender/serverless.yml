@@ -1,0 +1,58 @@
+service: mailSender
+
+frameworkVersion: '2'
+
+variablesResolutionMode: 20210326
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  lambdaHashingVersion: 20201221
+  environment:
+    BUCKET_REPORTS: ${ssm:/prod/sls-process-stackoverflow-data/BUCKET_REPORTS}
+    BUCKET_SURVEYS: ${ssm:/prod/sls-process-stackoverflow-data/BUCKET_SURVEYS}
+    REGION: ${ssm:/prod/sls-process-stackoverflow-data/REGION}
+    SES_EMAIL_FROM: ${ssm:/prod/sls-process-stackoverflow-data/SES_EMAIL_FROM}
+    SES_EMAIL_TO: ${ssm:/prod/sls-process-stackoverflow-data/SES_EMAIL_TO}
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          # grant execution task in ECS at all resources
+          Action:
+            - ses:SendRawEmail
+          Resource:
+            - '*'
+          Condition:
+            StringEquals:
+              ses:FromAddress:
+                - ${self:provider.environment.SES_EMAIL_FROM}
+
+        - Effect: Allow
+          Action:
+            - s3:GetObject
+          Resource:
+            - 'arn:aws:s3:::${self:custom.bucket}/${self:custom.bucketPrefix}'
+            # if bucket not exists, with "/*" after bucket name, it will be created
+            - 'arn:aws:s3:::${self:custom.bucket}/${self:custom.bucketPrefix}/*'
+
+package:
+  excludeDevDependencies: true
+
+custom:
+  bucket: ${self:provider.environment.BUCKET_SURVEYS}
+  bucketPrefix: ${self:provider.environment.BUCKET_REPORTS}
+
+functions:
+  mailSender:
+    handler: index.hello
+    events:
+      - s3:
+          #avoid create bucket
+          existing: true
+          bucket: ${self:provider.environment.BUCKET_SURVEYS}
+          event: s3:ObjectCreated:*
+          rules:
+            - prefix: ${self:custom.bucketPrefix}
+            - suffix: .xlsx
+
